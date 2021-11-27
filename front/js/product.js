@@ -4,7 +4,7 @@ const description = document.getElementById('description');
 const colors = document.getElementById('colors');
 const quantity = document.getElementById('quantity');
 const addToCart = document.getElementById('addToCart');
-const imgProduit = document.getElementsByClassName('item__img');
+const imageProduit = document.getElementById('item__img');
 const section = document.getElementsByClassName('item');
 
 let products;
@@ -31,29 +31,24 @@ fetch(ipProduit)
 
 //Affichage des infos du produit------------------------------------
 
-function displayElement(product){
 
+    const displayElement = (product) => {
    
 
     title.textContent = product.name;
     price.textContent = product.price;
     description.textContent = product.description;
-
+    
     const image = document.createElement('img');
         image.setAttribute('src', product.imageUrl);
         image.setAttribute('alt', product.altTxt);
-        section.children.appendChild(image)
-  
-       
-        
-        console.log(image);
-        console.log(imgProduit);
-
- 
- };
- 
+    
+    imageProduit.appendChild(image);    
+};
 
 
+    
+    
 
 
 
