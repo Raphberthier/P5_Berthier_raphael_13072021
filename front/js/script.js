@@ -1,33 +1,52 @@
 const items = document.getElementById('items');
 const productName = document.getElementById ('productName');
 const productDescription = document.getElementById ('productDescription');
-let products; 
 
 //API REQUEST
-const fetchProducts = async() => {
-    products = await fetch (
-    'http://localhost:3000/api/products').then(res => res.json());
-    console.log(products);
-};      
+fetch ('http://localhost:3000/api/products')
+    .then(res => res.json())
+    .then(function(products){
+        //FONT-END
+        for ( product of products){
+            let element = displayElement(product);
+            items.appendChild(element);
+        }
+    
 
-//FONT-END
-const showProducts = async() => {
-    await fetchProducts();
+    })
+//create elements Html
+ function displayElement(product){
+     const link = document.createElement('a');
+     link.setAttribute('href', `./product.html?id=${product._id}`);
 
-    items.innerHTML = (
-        products.map(produit => (
-            `
-            <a href="./product.html?id=${produit._id}">
-            <article>
-              <img src="${produit.imageUrl}" alt="${produit.altTxt}">
-              <h3 class="productName">${produit.name}</h3>
-              <p class="productDescription">${produit.description}</p>
-            </article>
-            `
-        )).join('')
-    );
-};
-showProducts();
+     const article = document.createElement('article');
+
+     const image = document.createElement('img');
+     image.setAttribute('src', product.imageUrl);
+     image.setAttribute('alt', product.altTxt);
+
+     const title = document.createElement('h3');
+     title.classList.add('productName');
+     title.textContent = product.name;
+
+     const p = document.createElement('p');
+     p.classList.add('productDescription');
+     p.textContent = product.description;
+
+     
+     //-----------------
+
+    article.appendChild(image);
+    article.appendChild(title);
+    article.appendChild(p);
+
+    link.appendChild(article);
+        return link 
+
+
+     
+ }
+
 
 
 
