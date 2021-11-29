@@ -31,10 +31,8 @@ fetch(ipProduit)
 
 //Affichage des infos du produit------------------------------------
 
-
-    const displayElement = (product) => {
+const displayElement = (product) => {
    
-
     title.textContent = product.name;
     price.textContent = product.price;
     description.textContent = product.description;
@@ -42,14 +40,31 @@ fetch(ipProduit)
     const image = document.createElement('img');
         image.setAttribute('src', product.imageUrl);
         image.setAttribute('alt', product.altTxt);
+        imageProduit.appendChild(image);
+         
     
-    imageProduit.appendChild(image);    
+        let optionValue = product.colors;
+            optionValue.forEach(function(color) {
+              const option = document.createElement('option');
+              option.setAttribute('value', color);
+              option.textContent = color;
+              colors.appendChild(option);  
+            });
+        
+    
+        
+       
+       
+       
+         
+        console.log(optionValue);
+        console.log(product);
 };
 
 
-    
-    
-
+  //------------------
+  
+ 
 
 
 
