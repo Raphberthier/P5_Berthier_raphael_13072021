@@ -1,74 +1,104 @@
-const title = document.getElementById('title');
-const price = document.getElementById('price');
-const description = document.getElementById('description');
-const colors = document.getElementById('colors');
-const quantity = document.getElementById('quantity');
-const addToCart = document.getElementById('addToCart');
-const imageProduit = document.getElementById('item__img');
-const section = document.getElementsByClassName('item');
+let itemImg = document.querySelector('.item__img');
 
-let products;
+let priceItem = document.getElementById('price');
+let descriptionItem = document.getElementById('description');
+let select = document.getElementById('colors');
+let qty = document.getElementById('quantity')
+let add = document.getElementById('addToCart')
 
+let product = {};
 
 
-//recuperation de l'id dans l'url----------------------------------
+    let productId = getPageId();
+    fetchProduct(productId);
 
-let str = document.location;
-let url = new URL(str);
-let id = url.searchParams.get("id");
+//Recover id product in url
 
-//recuperation du produit avec l'id dans l'url---------------------
+function getPageId(){
+    const query = window.location.search;
+    const urlParam = new URLSearchParams(query);
+    const id = urlParam.get("id");
+    return id
+}
 
-let ipProduit = 'http://localhost:3000/api/products/' + id;
+//Request api of id product
 
-fetch(ipProduit)
-    .then(res => res.json())
-    .then(function(product){
-            let element = displayElement(product);
-         
-        
-    });
+async function fetchProduct(id){
+    fetch('http://localhost:3000/api/products/' + id)
+        .then(res => res.json())
+        .then(data => {
+            product = data;
+            console.log(data)
+            display(data)
+        })
+}
 
-//Affichage des infos du produit------------------------------------
+//Show product
 
-const displayElement = (product) => {
-   
-    title.textContent = product.name;
-    price.textContent = product.price;
-    description.textContent = product.description;
-    
+function display(data){
+    let title = document.getElementById('title');
+ //   let name = data.name;
+    let price = data.price;
+    let imageUrl = data.imageUrl;
+    let colors = data.colors;
+    let description = data.description;
+    let altTxt = data.altTxt;
+    console.log(imageUrl)
+
+    title.innerHTML = name;
+    priceItem.innerHTML = price.toString();
+    descriptionItem.innerHTML = description;
+
+    for(let i in colors){
+        const arr = document.createElement('option');
+        arr.textContent = colors[i];
+        select.appendChild(arr)
+    }
     const image = document.createElement('img');
-        image.setAttribute('src', product.imageUrl);
-        image.setAttribute('alt', product.altTxt);
-        imageProduit.appendChild(image);
-         
+    image.setAttribute('src', data.imageUrl);
+    image.setAttribute('alt', data.altTxt);
+    itemImg.appendChild(image);
     
-        let optionValue = product.colors;
-            optionValue.forEach(function(color) {
-              const option = document.createElement('option');
-              option.setAttribute('value', color);
-              option.textContent = color;
-              colors.appendChild(option);  
-            });
-        
+}
+
+//Save Item in localStorage
+
+add.addEventListener('click', () => {
+    let list = [];
+    let local = localStorage.getItem('cart');
+    let dataQty = document.getElementById('quantity');
+    let dataColor = document.getElementById('colors');
     
-        
+//create object of item
+
+    let productList = {
+        imageUrl: product.imageUrl,
+        name: product.name,
+        id: product._id,
+        price: product.price,
+        colors: dataColor.value,
+        altTxt: product.altTxt,
+        quantity: dataQty.value
+    }
+
+    if(localStorage.getItem('cart') && localStorage.getItem('cart').length > 0) {
+        const local = JSON.parse(localStorage.getItem('cart')); 
+        const data = local.findIndex(data => data.id=== productList.id && data.colors === productList.colors);
+        if(data === -1){
+            local.push(productList);
+            localStorage.setItem('cart', JSON.stringify(local))
+        } else {
+            local[data].quantity = parseInt(productList.quantity)
+            localStorage.setItem('cart', JSON.stringify(local))
+        } 
+    } else {
+        local = [];
+        local.push(productList);
+        localStorage.setItem('cart', JSON.stringify(local));
        
-       
-       
-         
-        console.log(optionValue);
-        console.log(product);
-};
+    }
 
+    alert ('Produit ajouter au panier')
 
-  //------------------
-  
- 
-
-
-
-  
-    
-
+})
 
