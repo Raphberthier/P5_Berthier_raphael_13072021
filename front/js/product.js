@@ -27,7 +27,6 @@ async function fetchProduct(id){
     fetch('http://localhost:3000/api/products/' + id)
         .then(res => res.json())
         .then(data => {
-            product = data;
             console.log(data)
             display(data)
         })
@@ -37,7 +36,7 @@ async function fetchProduct(id){
 
 function display(data){
     let title = document.getElementById('title');
- //   let name = data.name;
+    let name = data.name;
     let price = data.price;
     let imageUrl = data.imageUrl;
     let colors = data.colors;
@@ -64,20 +63,17 @@ function display(data){
 //Save Item in localStorage
 
 add.addEventListener('click', () => {
-    let list = [];
+    
     let local = localStorage.getItem('cart');
     let dataQty = document.getElementById('quantity');
     let dataColor = document.getElementById('colors');
     
 //create object of item
+let idProduct = getPageId();
 
     let productList = {
-        imageUrl: product.imageUrl,
-        name: product.name,
-        id: product._id,
-        price: product.price,
+        id: idProduct,
         colors: dataColor.value,
-        altTxt: product.altTxt,
         quantity: dataQty.value
     }
 
