@@ -5,6 +5,7 @@
         callProduct(product);
         
     }
+    //call api 
     function callProduct(product){
         fetch('http://localhost:3000/api/products/' + product.id )
         .then(res => res.json())
@@ -92,7 +93,7 @@
                   productSupprimer.addEventListener("click", deleteProduct);
                   
               }
-             
+// create function for total price end products
 function getTotals(priceProduct, quantityProduct){
     let productTotalPrice = document.getElementById('totalPrice');
     console.log(productTotalPrice.innerHTML);
@@ -103,7 +104,7 @@ function getTotals(priceProduct, quantityProduct){
     productTotalQuantity.innerHTML =  parseInt(productTotalQuantity.innerHTML) + quantityProduct ;
  
 }
-
+//create for modify quantity in barket
 function modifyQuantity() {
    const initValue = JSON.parse(localStorage['cart']);
     for (let i = 0; i < initValue.length; i++){
@@ -120,9 +121,9 @@ function modifyQuantity() {
     }}
    location.reload();
 }     
-
+//create function for delete product in barket
 function deleteProduct(e) {
-    //Selection de l'element à supprimer en fonction de son id ET sa couleur
+   
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cet article ?")) {
         const produit = e.target.closest(".cart__item");
         const idToDelete = produit.dataset.id;
@@ -134,7 +135,7 @@ function deleteProduct(e) {
           (article) => article.id === idToDelete && article.color === colorToDelete
         );
     
-        //On supprime l'élément
+        
         basket.splice(indexToDelete, 1);
     
         localStorage.removeItem("cart");
@@ -151,19 +152,19 @@ function getForm() {
     const form = document.querySelector(".cart__order__form");
 
     //Création des expressions régulières
-    const emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
+    const emailRegExp = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
     const charRegExp = new RegExp("^[a-zA-Z ,.'-]+$");
     const addressRegExp = new RegExp("^[-a-zA-Z 0-9àâäéèêëïîôöùûüç]+$");
 
     form.firstName.addEventListener('change', function () {
         checkFirstName(this);
       });
-    
+    //create validation form
       const checkFirstName = function (inputFirstName) {
         let firstNameErrorMsg = inputFirstName.nextElementSibling;
     
         if (charRegExp.test(inputFirstName.value)) {
-          firstNameErrorMsg.innerHTML = 'champ validé';
+          firstNameErrorMsg.innerHTML = 'validé';
           return true;
         } else {
           firstNameErrorMsg.innerHTML = 'Veuillez renseigner votre prénom!';
@@ -179,7 +180,7 @@ function getForm() {
         let lastNameErrorMsg = inputLastName.nextElementSibling;
     
         if (charRegExp.test(inputLastName.value)) {
-          lastNameErrorMsg.innerHTML = 'champ validé';
+          lastNameErrorMsg.innerHTML = 'validé';
           return true
         } else {
           lastNameErrorMsg.innerHTML = 'Veuillez renseigner votre nom de famille!';
@@ -196,7 +197,7 @@ function getForm() {
         let addressErrorMsg = inputAddress.nextElementSibling;
     
         if (addressRegExp.test(inputAddress.value)) {
-          addressErrorMsg.innerHTML = 'champ validé';
+          addressErrorMsg.innerHTML = 'validé';
           return true
         } else {
           addressErrorMsg.innerHTML = 'Veuillez renseigner votre adresse!';
@@ -212,7 +213,7 @@ function getForm() {
         let cityErrorMsg = inputCity.nextElementSibling;
     
         if (charRegExp.test(inputCity.value)) {
-          cityErrorMsg.innerHTML = 'champ validé';
+          cityErrorMsg.innerHTML = 'validé';
           return true
         } else {
           cityErrorMsg.innerHTML = 'Veuillez renseigner votre ville!';
@@ -228,7 +229,7 @@ function getForm() {
         let emailErrorMsg = inputEmail.nextElementSibling;
     
         if (emailRegExp.test(inputEmail.value)) {
-          emailErrorMsg.innerHTML = 'champ validé';
+          emailErrorMsg.innerHTML = 'validé';
           return true
         } else {
           emailErrorMsg.innerHTML = 'Veuillez renseigner votre e-mail!';
@@ -275,7 +276,7 @@ function getForm() {
     
 }})}
 getForm();
-
+// post form result in api 
 function order(formResult){
     fetch('http://localhost:3000/api/products/order', {
     method: 'POST',

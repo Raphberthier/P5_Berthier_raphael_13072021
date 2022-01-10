@@ -6,6 +6,6 @@ let orderId = document.getElementById('orderId');
     const urlParam = new URLSearchParams(query);
     const id = urlParam.get("orderId");
     orderId.textContent = id ;
-
+localStorage.removeItem('cart');
    
     
